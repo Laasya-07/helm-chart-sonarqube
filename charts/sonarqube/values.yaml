@@ -47,7 +47,7 @@ elasticsearch:
 
 # also install the nginx ingress helm chart
 nginx:
-  enabled: false
+  enabled: true
 
 service:
   type: ClusterIP
@@ -61,7 +61,7 @@ service:
   #   - 0.0.0.0/0
   # loadBalancerIP: 1.2.3.4
 ingress:
-  enabled: false
+  enabled: true
   # Used to create an Ingress record.
   hosts:
     - name: sonarqube.your-org.com
@@ -70,11 +70,11 @@ ingress:
       # For additional control over serviceName and servicePort
       # serviceName: someService
       # servicePort: somePort
-  annotations: {}
-  # kubernetes.io/ingress.class: nginx
-  # kubernetes.io/tls-acme: "true"
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
   # This property allows for reports up to a certain size to be uploaded to SonarQube
-  # nginx.ingress.kubernetes.io/proxy-body-size: "8m"
+    nginx.ingress.kubernetes.io/proxy-body-size: "8m"
 
 # Additional labels for Ingress manifest file
   # labels:
@@ -96,17 +96,17 @@ affinity: {}
 # kubectl taint nodes <node> sonarqube=true:NoSchedule
 # The following statement will tolerate this taint and as such reverse a node for sonarqube
 tolerations: []
-#  - key: "sonarqube"
-#    operator: "Equal"
-#    value: "true"
-#    effect: "NoSchedule"
+   - key: "sonarqube"
+     operator: "Equal"
+     value: "true"
+     effect: "NoSchedule"
 
 # Node labels for pod assignment
 # Ref: https://kubernetes.io/docs/user-guide/node-selection/
 # add a label to a node with the following command
 # kubectl label node <node> sonarqube=true
-nodeSelector: {}
-#  sonarqube: "true"
+nodeSelector:
+   agentpool: agentpool
 
 # hostAliases allows the modification of the hosts file inside a container
 hostAliases: []
@@ -351,7 +351,7 @@ postgresql:
       enabled: false
   serviceAccount:
     ## If enabled = true, and name is not set, postgreSQL will create a serviceAccount
-    enabled: false
+    enabled: true
 #    name:
 
 # Additional labels to add to the pods:
@@ -367,7 +367,7 @@ tests:
   # image: bitnami/minideb-extras
 
 serviceAccount:
-  create: false
+  create: true
   # name:
   ## Annotations for the Service Account
   annotations: {}
